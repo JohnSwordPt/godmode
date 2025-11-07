@@ -1,0 +1,26 @@
+{
+    "name": "myself/gamemode",
+    "autoload": {
+        "psr-4": {
+            "godmode\\": "src/godmode/",
+            "F8\\": "src/F8/",
+            "fsm\\": "src/fsm/"
+        },
+        "psr-0": {
+            "GetterSetterTrait":"src/godmode/"
+        }
+    },
+    "authors": [
+        {
+            "name": "John Sword",
+            "email": "johnswordpt@gmail.com"
+        }
+    ],
+    "require": {
+        "halaxa/json-machine": "^1.2",
+        "ramsey/uuid": "^4.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
