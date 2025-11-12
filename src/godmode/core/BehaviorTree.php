@@ -26,18 +26,22 @@ class BehaviorTree
      * If 'debug' is true, returns the status of the tree as of the last update
      * @return string
      */
-    public function treeStatus() : string {
-        return $this->_lastTreeStatus ?? "";
-    }
-
-    /**
-     * Updates the tree
-     * 
-     * @param dt: number
-     * @return float
-     */
-    public function update(float $dt): int {
-        if ($this->debug) {
+        public function treeStatus() : string {
+            return $this->_lastTreeStatus ?? "";
+        }
+    
+        public function reset(): void
+        {
+            $this->_root->reset();
+        }
+    
+        /**
+         * Updates the tree
+         *
+         * @param dt: number
+         * @return float
+         */
+        public function update(float $dt): int {        if ($this->debug) {
             $this->clearStatus($this->_root);
         }
 

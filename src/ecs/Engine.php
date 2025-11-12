@@ -327,9 +327,13 @@ class Engine
      */
     public function Update( $time = null ) : void
     {
-        $currentTime = microtime(true);
-        $dt = $currentTime - $this->previousTime;
-        $this->previousTime = $currentTime;
+        if ($time === null) {
+            $currentTime = microtime(true);
+            $dt = $currentTime - $this->previousTime;
+            $this->previousTime = $currentTime;
+        } else {
+            $dt = $time;
+        }
 
         $this->updating = true;
         foreach ($this->systemList as $system)

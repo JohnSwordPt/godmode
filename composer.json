@@ -7,7 +7,8 @@
             "fsm\\": "src/fsm/",
             "ECS\\": "src/ecs/",
             "ECSDemo\\": "examples/ecs_example/",
-            "BusinessLogicECS\\": "examples/ecs_business_logic_example/"
+            "BusinessLogicECS\\": "examples/ecs_business_logic_example/",
+            "ECSBehaviorTreeDemo\\": "examples/ecs_behavior_tree_example/"
         },
         "psr-0": {
             "GetterSetterTrait":"src/godmode/"
