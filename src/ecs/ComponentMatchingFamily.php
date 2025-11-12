@@ -18,18 +18,22 @@ class ComponentMatchingFamily implements IFamily
     private $components;
     /** @var Engine $engine */
     private $engine;
+    /** @var NodePool $nodePool */
+    private NodePool $nodePool;
 
     /**
      * The constructor. Creates a ComponentMatchingFamily to provide a NodeList for the
      * given node class.
      * 
-     * @param Class The type of node to create and manage a NodeList for.
-     * @param Engine The engine that this family is managing teh NodeList for.
+     * @param Class $nodeClass The type of node to create and manage a NodeList for.
+     * @param Engine $engine The engine that this family is managing the NodeList for.
+     * @param NodePool $nodePool The node pool to use for creating and disposing nodes.
      */
-    public function __construct( $nodeClass, $engine )
+    public function __construct( $nodeClass, $engine, NodePool $nodePool )
     {
         $this->nodeClass = $nodeClass;
         $this->engine = $engine;
+        $this->nodePool = $nodePool;
         $this->init();
     }
 
@@ -151,7 +155,7 @@ class ComponentMatchingFamily implements IFamily
                     echo "Entity '{$entity->Name}' HAS component '{$componentClass}'.\n";
                 }
             }
-            $node = new $this->nodeClass();
+            $node = $this->nodePool->get($this->nodeClass);
             $node->Entity = $entity;
             foreach ( $this->components as $componentClass=>$prop )
             {
@@ -182,6 +186,7 @@ class ComponentMatchingFamily implements IFamily
             foreach ($this->nodes as $key => $listNode) {
                 if ($listNode === $node) {
                     unset($this->nodes[$key]);
+                    $this->nodePool->dispose($node); // Return node to pool
                     break;
                 }
             }
@@ -208,6 +213,7 @@ class ComponentMatchingFamily implements IFamily
         {
             /** @var Node $node */
             unset($this->entities[spl_object_hash($node->Entity)]);
+            $this->nodePool->dispose($node); // Return node to pool
         }
         $this->nodes->removeAll();
     }
