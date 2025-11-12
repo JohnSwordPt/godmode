@@ -14,6 +14,8 @@ class Engine
     private $systemList;
     private $families;
     private float $previousTime = 0;
+    private array $nodeMetaDataCache = [];
+    private NodePool $nodePool;
 
     /**
      * Indicates if the engine is currently in its update loop.
@@ -36,18 +38,25 @@ class Engine
         $this->entityNames = [];
         $this->families = [];
         $this->previousTime = microtime(true);
-
-
+        $this->nodeMetaDataCache = [];
+        $this->nodePool = new NodePool();
     }
     
     public function GetNodeMetaData($nodeClass, $variableName)
     {
+        $cacheKey = $nodeClass . '::' . $variableName;
+        if (isset($this->nodeMetaDataCache[$cacheKey])) {
+            return $this->nodeMetaDataCache[$cacheKey];
+        }
+
         $reflectionProperty = new \ReflectionProperty($nodeClass, $variableName);
 
         // Try to get the type from the property's type hint (PHP 7.4+)
         $type = $reflectionProperty->getType();
         if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
-            return $type->getName();
+            $result = $type->getName();
+            $this->nodeMetaDataCache[$cacheKey] = $result;
+            return $result;
         }
 
         // Fallback to docblock parsing if no type hint or if it's a built-in type
@@ -61,14 +70,20 @@ class Engine
             
             // If the component class name starts with a backslash, it's already fully qualified
             if (strpos($componentClassName, '\\') === 0) {
-                return ltrim($componentClassName, '\\'); // Remove leading backslash
+                $result = ltrim($componentClassName, '\\'); // Remove leading backslash
+                $this->nodeMetaDataCache[$cacheKey] = $result;
+                return $result;
             }
             // If it's a relative class name, prepend the node's namespace
             if ($nodeNamespace) {
-                return $nodeNamespace . '\\' . $componentClassName;
+                $result = $nodeNamespace . '\\' . $componentClassName;
+                $this->nodeMetaDataCache[$cacheKey] = $result;
+                return $result;
             }
+            $this->nodeMetaDataCache[$cacheKey] = $componentClassName;
             return $componentClassName;
         }
+        $this->nodeMetaDataCache[$cacheKey] = null;
         return null;
     }
 
@@ -144,7 +159,7 @@ class Engine
      */
     public function GetEntityByName( $name )
     {
-        return $this->entityNames[ $name ];
+        return $this->entityNames[ $name ] ?? null;
     }
 
     /**
@@ -211,7 +226,7 @@ class Engine
         {
             return $this->families[$nodeClass]->NodeList();
         }
-        $family = new ComponentMatchingFamily( $nodeClass, $this );
+        $family = new ComponentMatchingFamily( $nodeClass, $this, $this->nodePool );
         $this->families[$nodeClass] = $family;
         foreach( $this->entityList as $entity )
         {
