@@ -22,13 +22,32 @@ Godmode is a powerful PHP library designed to provide robust and flexible implem
 
 ## Installation
 
-To use this library, you can include it in your project via Composer.
+As this is a private library, clone the repository to your development environment.
 
 ```bash
-composer require myself/gamemode
+git clone <repository-url> godmode
+cd godmode
+composer install
 ```
+Then, include it in your project by adding a `path` repository to your project's `composer.json` or by direct inclusion.
 
-*Note: Replace `myself/gamemode` with the actual package name if different.*
+For Composer users, you can add a `path` repository:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./path/to/godmode"
+        }
+    ],
+    "require": {
+        "myself/gamemode": "*"
+    }
+}
+```
+Replace `./path/to/godmode` with the actual relative or absolute path to the cloned library.
+
 
 ## Usage
 
