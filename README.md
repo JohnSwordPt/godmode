@@ -16,9 +16,19 @@ Godmode is a powerful PHP library designed to provide robust and flexible implem
 - **Event-Driven:** Trigger state changes based on events.
 - **Flexible:** Easily model complex state-dependent behaviors.
 
+### Entity Component System (ECS)
+- **Decoupled Architecture:** Separates data (Components) from logic (Systems).
+- **Performance:** Efficient entity management and system iteration.
+
 ## Installation
 
-TBD
+To use this library, you can include it in your project via Composer.
+
+```bash
+composer require myself/gamemode
+```
+
+*Note: Replace `myself/gamemode` with the actual package name if different.*
 
 ## Usage
 
@@ -26,7 +36,7 @@ The library is designed for flexibility. You can find various examples demonstra
 
 ## Running Tests
 
-Godmode uses PHPUnit for testing. To run the test suite, navigate to the project root and execute:
+Godmode includes a comprehensive test suite covering core logic, selectors, tasks, and utilities. To run the tests, execute:
 
 ```bash
 ./vendor/bin/phpunit
@@ -35,7 +45,7 @@ Godmode uses PHPUnit for testing. To run the test suite, navigate to the project
 ## Dependencies
 
 ### Core Dependencies
+- None
 
 ### Development Dependencies
 - `phpunit/phpunit`: ^9.5
-
