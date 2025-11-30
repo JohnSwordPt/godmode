@@ -71,7 +71,7 @@ class Randoms
         return $this->getChance(2);
     }
 
-    public function shuffle(Array $arr) {
+    public function shuffle(Array &$arr) {
         for ($ii = count($arr) - 1; $ii > 1; $ii--) {
             $idx1 = $ii - 1;
             $idx2 = $this->_stream->nextInt($ii);

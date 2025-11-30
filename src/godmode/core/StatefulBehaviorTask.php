@@ -28,8 +28,8 @@ class StatefulBehaviorTask extends BehaviorTask
      */
     public function updateInternal(float $dt) : int {
         $lastStatus = $this->updateTask($dt);
-        $running = ($lastStatus == BehaviorTask::RUNNING);
-        if (!$running) {
+        $this->running = ($lastStatus == BehaviorTask::RUNNING);
+        if (!$this->running) {
             $this->reset();
         }
 

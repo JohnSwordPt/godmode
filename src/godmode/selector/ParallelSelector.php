@@ -67,6 +67,12 @@ class ParallelSelector extends StatefulBehaviorTask implements BehaviorTaskConta
         return $this->_type;
     }
 
+    public function reset() : void {
+        foreach ($this->_children as $child) {
+            $child->deactivate();
+        }
+    }
+
     public function addTask( BehaviorTask $task ) : ParallelSelector {
         $this->_children->push($task);
         return $this;
